@@ -35,71 +35,72 @@ app.post('/', bodyParser.raw({ type: 'application/json' }), (req, res) => {
     console.log(event)
     if (req.headers.authorization === config.VERIFICATION_TOKEN) {
         res.status(200);
+        console.log("Verification OK")
 
-        console.log("Webinar Ended Webhook Recieved.") 
+        // console.log("Webinar Ended Webhook Recieved.") 
 
-        res.send();
-        var uuid = event.payload.object.uuid;
-        //Double encode the uuid for validation incase it contains slashes
-        var euuid = encodeURIComponent(encodeURIComponent(uuid));
+        // res.send();
+        // var uuid = event.payload.object.uuid;
+        // //Double encode the uuid for validation incase it contains slashes
+        // var euuid = encodeURIComponent(encodeURIComponent(uuid));
 
-        var options = {
-            uri: "https://api.zoom.us/v2/past_webinars/" + euuid + "/absentees",
-            auth: {
-                'bearer': token
-            },
-            headers: {
-                'User-Agent': 'Zoom-api-Jwt-Request',
-                'content-type': 'application/json'
-            },
-            json: true
-        };
+        // var options = {
+        //     uri: "https://api.zoom.us/v2/past_webinars/" + euuid + "/absentees",
+        //     auth: {
+        //         'bearer': token
+        //     },
+        //     headers: {
+        //         'User-Agent': 'Zoom-api-Jwt-Request',
+        //         'content-type': 'application/json'
+        //     },
+        //     json: true
+        // };
 
 
 
-        rp(options)
-            .then(function (response) {
+        // rp(options)
+        //     .then(function (response) {
 
-                var myregistrantobj= response.registrants;
-                //console.log("Registrants:", myregistrantobj)
-                //fetch only the email addresses from the response and store the addresses in an array
+        //         var myregistrantobj= response.registrants;
+        //         //console.log("Registrants:", myregistrantobj)
+        //         //fetch only the email addresses from the response and store the addresses in an array
                 
-                var emailList = ["hasan.yildizz@gmail.com"]
-                for (var i = 0; i < myregistrantobj.length; i++) {
-                    //Store emails as an array of strings to match the request body for SendGrid API
-                    emailobjs = myregistrantobj[i].email
-                    emailList.push(emailobjs);
+        //         var emailList = ["hasan.yildizz@gmail.com"]
+        //         for (var i = 0; i < myregistrantobj.length; i++) {
+        //             //Store emails as an array of strings to match the request body for SendGrid API
+        //             emailobjs = myregistrantobj[i].email
+        //             emailList.push(emailobjs);
                     
-                }
+        //         }
               
-                // check if the emails have been fetched or not by printing to the console
-                console.log(emailList);
+        //         // check if the emails have been fetched or not by printing to the console
+        //         console.log(emailList);
                 
-                // Call SendGrid Email API to send the email to participants. You can customize the email content as you like.
+        //         // Call SendGrid Email API to send the email to participants. You can customize the email content as you like.
 
-                const msg = {
+        //         const msg = {
 
-                    to: emailList,
-                    from: 'info@emstechsolutions.com',
-                    subject: 'We are sorry that we missed you.',
-                    text: 'Please, let us know if the timing of these webinars do not work for you. We hope you can join us next time.'
+        //             to: "hasan.yildizz@gmail.com",
+        //             from: 'info@emstechsolutions.com',
+        //             subject: 'We are sorry that we missed you.',
+        //             text: 'Please, let us know if the timing of these webinars do not work for you. We hope you can join us next time.'
 
-                };
+        //         };
                 
-                return msg;
+        //         return msg;
 
-            })
-            .then(function(msg) {
-                sgMail.sendMultiple(msg);
-            })
-            .then(function(){
-                console.log("Email sent.")
-            })
+        //     })
+        //     .then(function(msg) {
+        //         sgMail.sendMultiple(msg);
+        //     })
+        //     .then(function(){
+        //         console.log("Email sent.")
+        //     })
             
-            .catch(function (err) {
-                // API call failed...
-                console.log('API call failed, reason ', err);
-            });
+        //     .catch(function (err) {
+        //         // API call failed...
+        //         console.log('API call failed, reason ', err);
+        //     });
 
 
     } else {
