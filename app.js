@@ -36,10 +36,9 @@ app.post('/', bodyParser.raw({ type: 'application/json' }), (req, res) => {
     console.log(event)
     if (req.headers.authorization === config.VERIFICATION_TOKEN) {
         console.log("participant",event?.payload?.object?.participant)
-        res.status(200);
         
         console.log("Verification OK")
-        res.sendStatus(200);
+        res.status(200).end('OK');
         // console.log("Webinar Ended Webhook Recieved.") 
 
         // res.send();
