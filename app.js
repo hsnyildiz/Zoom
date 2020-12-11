@@ -35,7 +35,7 @@ app.post('/', bodyParser.raw({ type: 'application/json' }), (req, res) => {
     // Check to see if you received the event or not.
     console.log(event)
     if (req.headers.authorization === config.VERIFICATION_TOKEN) {
-        console.log("participant",aa?.payload?.object?.participant)
+        console.log("participant",event?.payload?.object?.participant)
         res.status(200);
         console.log("Verification OK")
 
